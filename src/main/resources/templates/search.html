@@ -1,0 +1,25 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Search</title>
+    </head>
+    <body>
+
+        <h1 th:text="${'Search ' + message}">Default search</h1>
+        
+        <h2 th:text="${user}">Userino</h2>
+
+        <ul>
+            <li th:each="profile : ${profiles}">
+                <span th:text="${profile.name}">name</span>
+                <span th:text="${profile.username}">name</span>
+                <span th:text="${profile.profileString}">name</span>
+            </li>
+        </ul>
+        
+        <form method="POST" th:action="@{/logout}">
+            <input type="submit" value="Logout"/>
+        </form>
+    </body>
+</html>
