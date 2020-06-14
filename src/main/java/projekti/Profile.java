@@ -1,6 +1,9 @@
 package projekti;
 
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.Entity;
+import javax.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,5 +19,12 @@ public class Profile extends AbstractPersistable<Long> {
     private String username;
     private String profileString;
     private String password;
+    @OneToMany(mappedBy = "poster")
+    private List<Post> posts = new ArrayList<>();
+    @OneToMany(mappedBy = "requestor")
+    private List<Request> sentRequests = new ArrayList<>();
+    @OneToMany(mappedBy = "receiver")
+    private List<Request> receivedRequests = new ArrayList<>();
+    private String status;
 
 }

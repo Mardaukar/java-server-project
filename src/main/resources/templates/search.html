@@ -1,25 +1,45 @@
-<!DOCTYPE HTML>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml">
     <head>
-        <meta charset="UTF-8" />
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <title>Search</title>
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+        <link href="https://getbootstrap.com/docs/4.0/examples/signin/signin.css" rel="stylesheet" crossorigin="anonymous"/>
     </head>
     <body>
-
-        <h1 th:text="${'Search ' + message}">Default search</h1>
-        
-        <h2 th:text="${user}">Userino</h2>
-
-        <ul>
-            <li th:each="profile : ${profiles}">
-                <span th:text="${profile.name}">name</span>
-                <span th:text="${profile.username}">name</span>
-                <span th:text="${profile.profileString}">name</span>
-            </li>
-        </ul>
-        
-        <form method="POST" th:action="@{/logout}">
-            <input type="submit" value="Logout"/>
-        </form>
+        <div class="container">
+            <form class="form-signin" method="get" action="/wall">
+                <button class="btn btn-lg btn-primary btn-block" type="submit">The Wall</button>
+            </form>
+            <form class="form-signin" method="get" action="/my_profile">
+                <button class="btn btn-lg btn-primary btn-block" type="submit">My Profile</button>
+            </form>
+            <form class="form-signin" method="get" action="/connections">
+                <button class="btn btn-lg btn-primary btn-block" type="submit">My Connections</button>
+            </form>
+            <form class="form-signin" method="post" action="/logout">
+                <button class="btn btn-lg btn-primary btn-block" type="submit">Logout</button>
+            </form>
+        </div>
+        <div class="container">
+            <form class="form-signin" method="post" action="/search">
+                <h2 class="form-signin-heading">Search profiles</h2>
+                <p>
+                    <label for="name" class="sr-only">Name</label>
+                    <input type="text" id="name" name="name" class="form-control" placeholder="Name" required>
+                </p>
+                <button class="btn btn-lg btn-primary btn-block" type="submit">Search</button>
+            </form>
+        </div>
+        <div class="container">
+            <ul class="form-signin">
+                <li th:each="profile : ${profiles}">
+                    <span th:text="${profile.name}">name</span>
+                    <span th:text="${profile.username}">username</span>
+                    <a th:href="@{profiles/{item}(item=${profile.profileString})}">visit profile</a>
+                </li>
+            </ul>
+        </div>
     </body>
 </html>

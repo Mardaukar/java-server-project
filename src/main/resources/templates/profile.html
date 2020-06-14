@@ -1,13 +1,62 @@
-<!DOCTYPE HTML>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml">
     <head>
-        <meta charset="UTF-8" />
-        <title>Profile</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <title>Search</title>
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous"/>
+        <link href="https://getbootstrap.com/docs/4.0/examples/signin/signin.css" rel="stylesheet" crossorigin="anonymous"/>
     </head>
     <body>
-
-        <h1 th:text="${'Profile ' + message}">Default profile</h1>
-
-
+        <div class="container">
+            <form class="form-signin" method="get" action="/wall">
+                <button class="btn btn-lg btn-primary btn-block" type="submit">The Wall</button>
+            </form>
+            <form class="form-signin" method="get" action="/connections">
+                <button class="btn btn-lg btn-primary btn-block" type="submit">My Connections</button>
+            </form>
+            <form class="form-signin" method="get" action="/search">
+                <button class="btn btn-lg btn-primary btn-block" type="submit">Search</button>
+            </form>
+            <form class="form-signin" method="post" action="/logout">
+                <button class="btn btn-lg btn-primary btn-block" type="submit">Logout</button>
+            </form>
+        </div>
+        <div class="container">
+            <h1 class="form-signin" th:text="${profile.name}">Name</h1>
+            <h3 class="form-signin" th:text="'(' + ${profile.username} + ')'">Username</h3>
+        </div>
+        <div class="container" th:if="${status == 'not_connected'}">
+            <form class="form-signin" method="post" action="/request">
+                <h4 class="form-signin" th:text="'You and ' + (${profile.name}) + ' are not connected'">Pending Request</h4>
+                <input type="hidden" name="targetUsername" th:value="${profile.username}"/>
+                <button class="btn btn-lg btn-primary btn-block" type="submit">Request Connection</button>
+            </form>
+        </div>
+        <div class="container" th:if="${status == 'connected'}">
+            <form class="form-signin" method="post" action="/remove">
+                <h4 class="form-signin" th:text="'You and ' + (${profile.name}) + ' are connected'">Remove Connection</h4>
+                <input type="hidden" name="targetUsername" th:value="${profile.username}"/>
+                <button class="btn btn-lg btn-primary btn-block" type="submit">Remove Connection</button>
+            </form>
+        </div>
+        <div class="container" th:if="${status == 'request_sent'}">
+            <form class="form-signin" method="post" action="/cancel">
+                <h4 class="form-signin" th:text="'You have sent a request to ' + (${profile.name})">Pending Request</h4>
+                <input type="hidden" name="targetUsername" th:value="${profile.username}"/>
+                <button class="btn btn-lg btn-primary btn-block" type="submit">Cancel Request</button>
+            </form>
+        </div>
+        <div class="container" th:if="${status == 'request_received'}">
+            <h4 class="form-signin" th:text="(${profile.name}) + ' has sent you a request'">Pending Request</h4>
+            <form class="form-signin" method="post" action="/accept">
+                <input type="hidden" name="requestorUsername" th:value="${profile.username}"/>
+                <button class="btn btn-lg btn-primary btn-block" type="submit">Accept</button>
+            </form>
+            <form class="form-signin" method="post" action="/decline">
+                <input type="hidden" name="requestorUsername" th:value="${profile.username}"/>
+                <button class="btn btn-lg btn-primary btn-block" type="submit">Decline</button>
+            </form>
+        </div>
     </body>
 </html>
