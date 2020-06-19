@@ -36,7 +36,7 @@ public class LoginController {
             return "redirect:/register";
         }
         
-        Profile p = new Profile(name, username, profileString, passwordEncoder.encode(password), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), "");
+        Profile p = new Profile(name, username, profileString, passwordEncoder.encode(password), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), "", new ArrayList<>());
         profileRepository.save(p);
         return "redirect:/wall";
     }

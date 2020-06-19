@@ -2,6 +2,7 @@ package projekti;
 
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import lombok.AllArgsConstructor;
@@ -26,5 +27,6 @@ public class Profile extends AbstractPersistable<Long> {
     @OneToMany(mappedBy = "receiver")
     private List<Request> receivedRequests = new ArrayList<>();
     private String status;
-
+    @ElementCollection(targetClass=String.class)
+    private List<String> skills = new ArrayList<>();
 }

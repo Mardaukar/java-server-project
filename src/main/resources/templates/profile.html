@@ -67,5 +67,21 @@
                 <button class="btn btn-lg btn-primary btn-block" type="submit">Decline</button>
             </form>
         </div>
+        <div class="container">
+            <h2 class="form-signin">Skills</h2>
+            <ul class="form-signin">
+                <li th:each="skill : ${profile.skills}">
+                    <span th:text="${skill}">skill</span>
+                </li>
+            </ul>
+        </div>
+        <div class="container" th:if="${status == 'user'}">
+            <form class="form-signin" method="post" action="/skill">
+                <p>
+                    <input type="text" id="skill" name="skill" class="form-control" placeholder="New skill..." required>
+                </p>
+                <button class="btn btn-lg btn-primary btn-block" type="submit">Add New Skill</button>
+            </form>
+        </div>
     </body>
 </html>

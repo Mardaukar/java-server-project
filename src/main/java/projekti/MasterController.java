@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 
 @Controller
@@ -190,5 +189,14 @@ public class MasterController {
         time.truncatedTo(ChronoUnit.SECONDS);
         postRepository.save(new Post(p, post, time));    
         return "redirect:/wall";
+    }
+    
+    @PostMapping("/skill")
+    public String skill(@RequestParam String skill) {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        Profile p = profileRepository.findByUsername(username);
+        p.getSkills().add(skill);
+        profileRepository.save(p);
+        return "redirect:/my_profile";
     }
 }
