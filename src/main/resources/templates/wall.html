@@ -36,7 +36,7 @@
                 <li th:each="post : ${posts}">
                     <span th:text="${post.poster.name}">name</span>
                     <a th:text="${post.poster.username}" th:href="@{profiles/{item}(item=${post.poster.profileString})}">username</a>
-                    <span th:text="${post.posted}">posted</span>
+                    <span th:text="${#temporals.format(post.posted, 'dd-MM-yyyy HH:mm')}">posted</span>
                     <p>
                         <span th:text="${post.text}">text</span>
                     </p>

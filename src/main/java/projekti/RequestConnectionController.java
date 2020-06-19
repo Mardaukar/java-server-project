@@ -1,15 +1,11 @@
 package projekti;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -38,7 +34,7 @@ public class RequestConnectionController {
     }
     
     @PostMapping("/remove")
-    public String removeConnection(@RequestParam String targetUsername) {
+    public String removeConnection(@RequestParam String targetUsername, @RequestParam Boolean connectionsPage) {
         Profile pageProfile = profileRepository.findByUsername(targetUsername);
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         Profile userProfile = profileRepository.findByUsername(username);
@@ -52,31 +48,45 @@ public class RequestConnectionController {
             }
         }
  
-        return "redirect:/profiles/" + pageProfile.getProfileString();
+        if (connectionsPage == true) {
+            return "redirect:/connections/";
+        } else {
+            return "redirect:/profiles/" + pageProfile.getProfileString();
+        }
     }
     
     @PostMapping("/cancel")
-    public String cancelRequest(@RequestParam String targetUsername) {
+    public String cancelRequest(@RequestParam String targetUsername, @RequestParam Boolean connectionsPage) {
         Profile pageProfile = profileRepository.findByUsername(targetUsername);
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         Profile userProfile = profileRepository.findByUsername(username);
         Request r = requestRepository.findByRequestorAndReceiver(userProfile, pageProfile);
         requestRepository.delete(r);
-        return "redirect:/profiles/" + pageProfile.getProfileString();
+        
+        if (connectionsPage == true) {
+            return "redirect:/connections/";
+        } else {
+            return "redirect:/profiles/" + pageProfile.getProfileString();
+        }
     }
     
     @PostMapping("/decline")
-    public String declineRequest(@RequestParam String requestorUsername) {
+    public String declineRequest(@RequestParam String requestorUsername, @RequestParam Boolean connectionsPage) {
         Profile pageProfile = profileRepository.findByUsername(requestorUsername);
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         Profile userProfile = profileRepository.findByUsername(username);
         Request r = requestRepository.findByRequestorAndReceiver(pageProfile, userProfile);
         requestRepository.delete(r);
-        return "redirect:/profiles/" + pageProfile.getProfileString();
+        
+        if (connectionsPage == true) {
+            return "redirect:/connections/";
+        } else {
+            return "redirect:/profiles/" + pageProfile.getProfileString();
+        }
     }
     
     @PostMapping("/accept")
-    public String acceptRequest(@RequestParam String requestorUsername) {
+    public String acceptRequest(@RequestParam String requestorUsername, @RequestParam Boolean connectionsPage) {
         Profile pageProfile = profileRepository.findByUsername(requestorUsername);
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         Profile userProfile = profileRepository.findByUsername(username);
@@ -88,6 +98,10 @@ public class RequestConnectionController {
         connection.getProfiles().add(pageProfile);
         connectionRepository.save(connection);  
         
-        return "redirect:/profiles/" + pageProfile.getProfileString();
+        if (connectionsPage == true) {
+            return "redirect:/connections/";
+        } else {
+            return "redirect:/profiles/" + pageProfile.getProfileString();
+        }
     }
 }

@@ -12,6 +12,11 @@
             <form class="form-signin" method="get" action="/wall">
                 <button class="btn btn-lg btn-primary btn-block" type="submit">The Wall</button>
             </form>
+            <div th:if="${status != 'user'}">
+            <form class="form-signin" method="get" action="/my_profile">
+                <button class="btn btn-lg btn-primary btn-block" type="submit">My Profile</button>
+            </form>
+            </div>
             <form class="form-signin" method="get" action="/connections">
                 <button class="btn btn-lg btn-primary btn-block" type="submit">My Connections</button>
             </form>
@@ -27,22 +32,24 @@
             <h3 class="form-signin" th:text="'(' + ${profile.username} + ')'">Username</h3>
         </div>
         <div class="container" th:if="${status == 'not_connected'}">
+            <h4 class="form-signin" th:text="'You and ' + (${profile.name}) + ' are not connected'">Pending Request</h4>
             <form class="form-signin" method="post" action="/request">
-                <h4 class="form-signin" th:text="'You and ' + (${profile.name}) + ' are not connected'">Pending Request</h4>
                 <input type="hidden" name="targetUsername" th:value="${profile.username}"/>
                 <button class="btn btn-lg btn-primary btn-block" type="submit">Request Connection</button>
             </form>
         </div>
         <div class="container" th:if="${status == 'connected'}">
+            <h4 class="form-signin" th:text="'You and ' + (${profile.name}) + ' are connected'">Remove Connection</h4>
             <form class="form-signin" method="post" action="/remove">
-                <h4 class="form-signin" th:text="'You and ' + (${profile.name}) + ' are connected'">Remove Connection</h4>
+                <input type="hidden" name="connectionsPage" th:value="false"/>
                 <input type="hidden" name="targetUsername" th:value="${profile.username}"/>
                 <button class="btn btn-lg btn-primary btn-block" type="submit">Remove Connection</button>
             </form>
         </div>
         <div class="container" th:if="${status == 'request_sent'}">
+            <h4 class="form-signin" th:text="'You have sent a request to ' + (${profile.name})">Pending Request</h4>
             <form class="form-signin" method="post" action="/cancel">
-                <h4 class="form-signin" th:text="'You have sent a request to ' + (${profile.name})">Pending Request</h4>
+                <input type="hidden" name="connectionsPage" th:value="false"/>
                 <input type="hidden" name="targetUsername" th:value="${profile.username}"/>
                 <button class="btn btn-lg btn-primary btn-block" type="submit">Cancel Request</button>
             </form>
@@ -51,9 +58,11 @@
             <h4 class="form-signin" th:text="(${profile.name}) + ' has sent you a request'">Pending Request</h4>
             <form class="form-signin" method="post" action="/accept">
                 <input type="hidden" name="requestorUsername" th:value="${profile.username}"/>
+                <input type="hidden" name="connectionsPage" th:value="false"/>
                 <button class="btn btn-lg btn-primary btn-block" type="submit">Accept</button>
             </form>
             <form class="form-signin" method="post" action="/decline">
+                <input type="hidden" name="connectionsPage" th:value="false"/>
                 <input type="hidden" name="requestorUsername" th:value="${profile.username}"/>
                 <button class="btn btn-lg btn-primary btn-block" type="submit">Decline</button>
             </form>
